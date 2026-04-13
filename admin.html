@@ -204,6 +204,23 @@
       }
     }
 
+    // 🔔 LISTENER: Detectar cambios de autenticación en tiempo real
+    supabaseClient.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session?.user) {
+        currentUser = session.user;
+        document.getElementById('loginContainer').classList.add('hidden');
+        document.getElementById('registerContainer').classList.add('hidden');
+        document.getElementById('adminContainer').style.display = 'block';
+        document.getElementById('userEmail').textContent = currentUser.email;
+        cargarProductos();
+        cargarGaleria();
+      } else if (event === 'SIGNED_OUT') {
+        currentUser = null;
+        document.getElementById('loginContainer').classList.remove('hidden');
+        document.getElementById('adminContainer').style.display = 'none';
+      }
+    });
+
     window.login = async function() {
       const e = document.getElementById('loginEmail').value;
       const p = document.getElementById('loginPassword').value;
