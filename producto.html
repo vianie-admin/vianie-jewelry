@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Básico (se actualiza dinámicamente con JS) -->
+  <title id="page-title">Vianie Jewelry - Detalle del Producto</title>
+  <meta id="meta-description" name="description" content="Vianie Jewelry - Accesorios elegantes en acero inoxidable. Envíos a domicilio en Santa Cruz, Bolivia.">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#b68d40">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.svg">
+  <link rel="apple-touch-icon" href="favicon.svg">
+  
+  <!-- Canonical URL (se actualiza dinámicamente) -->
+  <link id="canonical-url" rel="canonical" href="/producto.html">
+
+  <!-- Open Graph / Facebook / WhatsApp (se actualiza dinámicamente) -->
+  <meta id="og-type" property="og:type" content="product">
+  <meta id="og-url" property="og:url" content="/producto.html">
+  <meta id="og-title" property="og:title" content="Vianie Jewelry - Producto">
+  <meta id="og-description" property="og:description" content="Accesorio elegante en acero inoxidable de alta calidad">
+  <meta id="og-image" property="og:image" content="/og-image.svg">
+  <meta id="og-price" property="product:price:amount" content="">
+  <meta property="product:price:currency" content="BOB">
+  <meta property="og:locale" content="es_BO">
+  <meta property="og:site_name" content="Vianie Jewelry">
+
+  <!-- Twitter Card (se actualiza dinámicamente) -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta id="twitter-url" name="twitter:url" content="/producto.html">
+  <meta id="twitter-title" name="twitter:title" content="Vianie Jewelry - Producto">
+  <meta id="twitter-description" name="twitter:description" content="Accesorio elegante en acero inoxidable de alta calidad">
+  <meta id="twitter-image" name="twitter:image" content="/og-image.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* Loading spinner para detalle */
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid #f4f3f1;
+      border-top-color: #b68d40;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Estilos para las flechas de la galería */
+    .galeria-wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    .btn-galeria {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(255, 255, 255, 0.9);
+      border: none;
+      color: #333;
+      font-size: 20px;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      z-index: 10;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .btn-galeria:hover {
+      background-color: rgba(255, 255, 255, 1);
+      transform: translateY(-50%) scale(1.1);
+    }
+    #btn-prev { left: 15px; }
+    #btn-next { right: 15px; }
+
+    /* Estilos para la imagen ampliada (Lightbox) */
+    .imagen-clickeable {
+      cursor: zoom-in;
+      transition: transform 0.3s;
+    }
+    .modal-lightbox {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(10px);
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .modal-lightbox.show {
+      opacity: 1;
+    }
+    .modal-contenido {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 10px 50px rgba(0,0,0,0.5);
+      animation: zoomIn 0.3s ease;
+    }
+    @keyframes zoomIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .cerrar-modal {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: white;
+      font-size: 45px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 10000;
+      transition: all 0.2s;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+    }
+    .cerrar-modal:hover { 
+      color: #b68d40; 
+      background: rgba(255,255,255,0.2);
+      transform: rotate(90deg);
+    }
+  </style>
+</head>
+<body>
+
+  <div id="modal-imagen" class="modal-lightbox">
+    <span class="cerrar-modal" id="btn-cerrar-modal">&times;</span>
+    <img class="modal-contenido" id="img-ampliada">
+  </div>
+
+  <nav class="top-navbar">
+    <div class="back-action">
+        <a href="index.html" class="back-btn">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+          </svg>
+          Volver
+        </a>
+    </div>
+
+    <div class="logo">
+      <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#b68d40" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 3h12l4 6-10 12L2 9z"/>
+      </svg>
+      <span class="logo-text">VIANIE</span>
+    </div>
+  </nav>
+
+  <main class="product-detail-container">
+
+    <div class="product-main-grid">
+
+      <div class="product-image-column">
+        <div class="galeria-wrapper">
+          <div class="image-container-detail" id="contenedor-imagen">
+              <div class="image-placeholder-detail">CARGANDO IMAGEN...</div>
+          </div>
+          <button id="btn-prev" class="btn-galeria" style="display: none;">❮</button>
+          <button id="btn-next" class="btn-galeria" style="display: none;">❯</button>
+        </div>
+      </div>
+
+      <div class="product-info-column">
+        <h1 id="product-name" class="product-title"></h1>
+
+        <div class="product-meta">
+          <span id="product-price" class="price-detail"></span>
+          <span id="product-material" class="material-tag-detail"></span>
+        </div>
+
+        <p class="product-description">
+          Hermosa pieza fabricada en Acero Inoxidable de alta calidad, resistente al agua y perfecta para el uso diario. El toque de elegancia que tu estilo necesita.
+        </p>
+
+        <div class="envio-tag">Envíos a domicilio en Santa Cruz</div>
+
+        <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 20px;">
+            <button id="add-to-cart-detail" class="whatsapp-purchase-btn" style="background: linear-gradient(135deg, #b68d40 0%, #8f7030 100%); box-shadow: 0 4px 20px rgba(182, 141, 64, 0.3);" onclick="agregarDesdeDetalle()">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+              </svg>
+              Agregar al Carrito
+            </button>
+
+            <button class="whatsapp-purchase-btn" onclick="comprarDirectoWhatsApp(1)" style="background: linear-gradient(135deg, #25d366 0%, #128c7e 100%); box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                 <path d="M.057 24l1.687-6.162c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.56 5.338-11.892 11.901-11.892 3.181 0 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.481 8.404 0 6.56-5.338 11.892-11.901 11.892-2.01 0-3.987-.506-5.741-1.465l-6.253 1.641zm11.901-20.814c-4.909 0-8.905 3.996-8.905 8.906 0 2.055.707 3.97 2.001 5.485l-1.094 3.991 4.089-1.071c1.464.845 3.134 1.29 4.849 1.29 4.909 0 8.905-3.996 8.905-8.906 0-4.91-3.996-8.906-8.905-8.906zm5.241 12.601c-.287-.144-1.698-.838-1.961-.934-.263-.096-.454-.144-.646.144-.192.288-.742.934-.908 1.127-.166.192-.331.216-.618.072-.287-.144-1.211-.447-2.308-1.425-.853-.762-1.43-1.702-1.597-1.99-.166-.288-.018-.444.126-.587.13-.13.287-.336.431-.504.144-.168.192-.288.287-.48.096-.192.048-.36-.024-.504-.072-.144-.646-1.56-.885-2.136-.233-.56-.469-.484-.646-.492-.167-.008-.36-.01-.552-.01s-.504.072-.768.36c-.263.288-1.006.984-1.006 2.399 0 1.416 1.031 2.784 1.175 2.976.144.192 2.03 3.1 4.916 4.347.687.297 1.223.474 1.64.607.69.219 1.318.188 1.815.114.553-.082 1.698-.694 1.937-1.366.239-.672.239-1.248.167-1.367-.071-.118-.263-.192-.55-.336z"/>
+              </svg>
+              Pedir por WhatsApp - Contacto 1
+            </button>
+
+            <button class="whatsapp-purchase-btn" onclick="comprarDirectoWhatsApp(2)" style="background: linear-gradient(135deg, #0b695e 0%, #084d45 100%); box-shadow: 0 4px 20px rgba(11, 105, 94, 0.3);">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                 <path d="M.057 24l1.687-6.162c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.56 5.338-11.892 11.901-11.892 3.181 0 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.481 8.404 0 6.56-5.338 11.892-11.901 11.892-2.01 0-3.987-.506-5.741-1.465l-6.253 1.641zm11.901-20.814c-4.909 0-8.905 3.996-8.905 8.906 0 2.055.707 3.97 2.001 5.485l-1.094 3.991 4.089-1.071c1.464.845 3.134 1.29 4.849 1.29 4.909 0 8.905-3.996 8.905-8.906 0-4.91-3.996-8.906-8.905-8.906zm5.241 12.601c-.287-.144-1.698-.838-1.961-.934-.263-.096-.454-.144-.646.144-.192.288-.742.934-.908 1.127-.166.192-.331.216-.618.072-.287-.144-1.211-.447-2.308-1.425-.853-.762-1.43-1.702-1.597-1.99-.166-.288-.018-.444.126-.587.13-.13.287-.336.431-.504.144-.168.192-.288.287-.48.096-.192.048-.36-.024-.504-.072-.144-.646-1.56-.885-2.136-.233-.56-.469-.484-.646-.492-.167-.008-.36-.01-.552-.01s-.504.072-.768.36c-.263.288-1.006.984-1.006 2.399 0 1.416 1.031 2.784 1.175 2.976.144.192 2.03 3.1 4.916 4.347.687.297 1.223.474 1.64.607.69.219 1.318.188 1.815.114.553-.082 1.698-.694 1.937-1.366.239-.672.239-1.248.167-1.367-.071-.118-.263-.192-.55-.336z"/>
+              </svg>
+              Pedir por WhatsApp - Contacto 2
+            </button>
+
+            <a href="index.html" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; color: #b68d40; text-decoration: none; font-weight: 500; padding: 16px; border: 2px solid #b68d40; border-radius: 8px; transition: all 0.2s; margin-top: 10px;" onmouseover="this.style.background='#b68d40'; this.style.color='#fff'" onmouseout="this.style.background='transparent'; this.style.color='#b68d40'">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+              </svg>
+              Volver al catálogo
+            </a>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // ==========================================
+    // VIANIE JEWELRY - SUPABASE CLIENT
+    // ==========================================
+    const SUPABASE_URL = 'https://wcaljwklhfgvguwdtabw.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndjYWxqd2tsaGZndmd1d2R0YWJ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1ODcxMTYsImV4cCI6MjA5MTE2MzExNn0.7zG5MDeIk8xwBIs6s1iNfaVkaH3C5B7DLJVyoFPqKck';
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // 🌐 AUTO-DETECTAR DOMINIO Y ACTUALIZAR SEO META TAGS
+    (function autoUpdateSEOUrls() {
+      const baseUrl = window.location.origin;
+      
+      // Actualizar canonical
+      const canonical = document.getElementById('canonical-url');
+      if (canonical) canonical.href = baseUrl + '/producto.html';
+      
+      // Actualizar Open Graph
+      const ogUrl = document.getElementById('og-url');
+      if (ogUrl) ogUrl.content = baseUrl + '/producto.html';
+      
+      const ogImage = document.getElementById('og-image');
+      if (ogImage) ogImage.content = baseUrl + '/og-image.svg';
+      
+      // Actualizar Twitter Card
+      const twitterUrl = document.getElementById('twitter-url');
+      if (twitterUrl) twitterUrl.content = baseUrl + '/producto.html';
+      
+      const twitterImage = document.getElementById('twitter-image');
+      if (twitterImage) twitterImage.content = baseUrl + '/og-image.svg';
+    })();
+
+    // Variables globales para el producto actual
+    let productoActual = null;
+
+    function obtenerParametroUrl(nombreParametro) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(nombreParametro);
+    }
+
+    const idProducto = obtenerParametroUrl('id');
+    const nombreProducto = obtenerParametroUrl('nombre');
+    const precioProducto = obtenerParametroUrl('precio');
+    const materialProducto = obtenerParametroUrl('material');
+
+    if (nombreProducto && precioProducto && idProducto) {
+      document.title = `Vianie Jewelry - ${nombreProducto}`;
+      document.getElementById('product-name').innerText = nombreProducto;
+      document.getElementById('product-price').innerText = precioProducto + ' bs.-';
+      document.getElementById('product-material').innerText = materialProducto;
+
+      const contenedor = document.getElementById('contenedor-imagen');
+      
+      // Mostrar spinner mientras carga
+      contenedor.innerHTML = '<div class="loading-spinner"></div>';
+
+      // Actualizar meta tags SEO dinámicos
+      function actualizarMetaTagsSEO(producto) {
+        const baseURL = window.location.origin + window.location.pathname;
+        const productURL = `${baseURL}?id=${producto.id}&nombre=${encodeURIComponent(producto.nombre)}`;
+        
+        // Title
+        document.title = `${producto.nombre} - Vianie Jewelry`;
+        document.getElementById('page-title').textContent = `${producto.nombre} - Vianie Jewelry`;
+        
+        // Description
+        const descripcion = `Compra ${producto.nombre} en acero ${producto.material}. Precio: ${producto.precio} bs. Envíos a domicilio en Santa Cruz, Bolivia.`;
+        document.getElementById('meta-description').setAttribute('content', descripcion);
+        
+        // Canonical URL
+        document.getElementById('canonical-url').href = productURL;
+        
+        // Open Graph
+        document.getElementById('og-url').setAttribute('content', productURL);
+        document.getElementById('og-title').setAttribute('content', `${producto.nombre} - Vianie Jewelry`);
+        document.getElementById('og-description').setAttribute('content', descripcion);
+        
+        // Imagen del producto para OG
+        const imagenURL = producto.imagen_url || '/og-image.svg';
+        document.getElementById('og-image').setAttribute('content', imagenURL);
+        document.getElementById('og-price').setAttribute('content', producto.precio);
+        
+        // Twitter Card
+        document.getElementById('twitter-url').setAttribute('content', productURL);
+        document.getElementById('twitter-title').setAttribute('content', `${producto.nombre} - Vianie Jewelry`);
+        document.getElementById('twitter-description').setAttribute('content', descripcion);
+        document.getElementById('twitter-image').setAttribute('content', imagenURL);
+      }
+
+      // Función para cargar producto desde Supabase
+      async function cargarProducto() {
+        try {
+          let producto = null;
+
+          // Intentar buscar por ID primero
+          const { data: productoData, error } = await supabaseClient
+            .from('productos')
+            .select('*')
+            .eq('id', idProducto)
+            .single();
+
+          if (!error && productoData) {
+            producto = productoData;
+          }
+
+          // Si no encuentra por ID, buscar por nombre
+          if (!producto) {
+            const { data: productos } = await supabaseClient
+              .from('productos')
+              .select('*')
+              .order('nombre', { ascending: true });
+
+            if (productos) {
+              producto = productos.find(p => p.nombre === nombreProducto);
+            }
+          }
+
+          if (!producto) {
+            contenedor.innerHTML = '<div class="image-placeholder-detail">PRODUCTO NO ENCONTRADO</div>';
+            return;
+          }
+
+          // Actualizar meta tags SEO con datos del producto
+          actualizarMetaTagsSEO(producto);
+
+          // Guardar producto actual para el carrito
+          productoActual = producto;
+
+          // Construir la Galería de Imágenes
+          let listaImagenes = [];
+
+          if (producto.imagen_url) {
+            listaImagenes = [producto.imagen_url];
+            if (producto.galeria_urls && producto.galeria_urls.length > 0) {
+              listaImagenes = listaImagenes.concat(producto.galeria_urls);
+            }
+          } else {
+            listaImagenes = [idProducto];
+          }
+
+          // Limpiar contenedor
+          contenedor.innerHTML = '';
+
+          // Crear imagen
+          const imgElement = document.createElement('img');
+          imgElement.src = listaImagenes[0];
+          imgElement.style.width = '100%';
+          imgElement.style.height = '100%';
+          imgElement.style.objectFit = 'cover';
+          imgElement.classList.add('imagen-clickeable');
+          imgElement.alt = nombreProducto;
+          
+          // Si la imagen falla, mostrar placeholder
+          imgElement.onerror = function() {
+            contenedor.innerHTML = '<div class="image-placeholder-detail">IMAGEN NO DISPONIBLE</div>';
+          };
+
+          contenedor.appendChild(imgElement);
+
+          // Indicador de galería (puntos)
+          if (listaImagenes.length > 1) {
+            const indicador = document.createElement('div');
+            indicador.style.cssText = 'position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 5;';
+            listaImagenes.forEach((_, i) => {
+              const dot = document.createElement('div');
+              dot.style.cssText = `width: 8px; height: 8px; border-radius: 50%; background: ${i === 0 ? '#b68d40' : 'rgba(255,255,255,0.5)'}; transition: all 0.3s;`;
+              dot.dataset.index = i;
+              indicador.appendChild(dot);
+            });
+            contenedor.style.position = 'relative';
+            contenedor.appendChild(indicador);
+          }
+
+          // LÓGICA DEL LIGHTBOX
+          const modal = document.getElementById('modal-imagen');
+          const imgAmpliada = document.getElementById('img-ampliada');
+          const btnCerrar = document.getElementById('btn-cerrar-modal');
+
+          imgElement.addEventListener('click', () => {
+            modal.style.display = 'flex';
+            imgAmpliada.src = imgElement.src;
+            setTimeout(() => modal.classList.add('show'), 10);
+          });
+
+          btnCerrar.addEventListener('click', () => {
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = 'none', 300);
+          });
+
+          modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+              modal.classList.remove('show');
+              setTimeout(() => modal.style.display = 'none', 300);
+            }
+          });
+
+          document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'flex') {
+              modal.classList.remove('show');
+              setTimeout(() => modal.style.display = 'none', 300);
+            }
+          });
+
+          // Activar botones manuales solo si hay más de 1 foto
+          if (listaImagenes.length > 1) {
+            const btnPrev = document.getElementById('btn-prev');
+            const btnNext = document.getElementById('btn-next');
+
+            btnPrev.style.display = 'flex';
+            btnNext.style.display = 'flex';
+
+            let indice = 0;
+            const dots = contenedor.querySelectorAll('[data-index]');
+
+            function actualizarImagen() {
+              imgElement.src = listaImagenes[indice];
+              dots.forEach((dot, i) => {
+                dot.style.background = i === indice ? '#b68d40' : 'rgba(255,255,255,0.5)';
+              });
+            }
+
+            btnNext.addEventListener('click', () => {
+              indice = (indice + 1) % listaImagenes.length;
+              actualizarImagen();
+            });
+
+            btnPrev.addEventListener('click', () => {
+              indice = (indice - 1 + listaImagenes.length) % listaImagenes.length;
+              actualizarImagen();
+            });
+
+            document.addEventListener('keydown', (e) => {
+              if (modal.style.display === 'flex') {
+                if (e.key === 'ArrowRight') {
+                  indice = (indice + 1) % listaImagenes.length;
+                  actualizarImagen();
+                  imgAmpliada.src = listaImagenes[indice];
+                } else if (e.key === 'ArrowLeft') {
+                  indice = (indice - 1 + listaImagenes.length) % listaImagenes.length;
+                  actualizarImagen();
+                  imgAmpliada.src = listaImagenes[indice];
+                }
+              }
+            });
+
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            contenedor.addEventListener('touchstart', (e) => {
+              touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+
+            contenedor.addEventListener('touchend', (e) => {
+              touchEndX = e.changedTouches[0].screenX;
+              const diff = touchStartX - touchEndX;
+              
+              if (Math.abs(diff) > 50) {
+                if (diff > 0) {
+                  indice = (indice + 1) % listaImagenes.length;
+                } else {
+                  indice = (indice - 1 + listaImagenes.length) % listaImagenes.length;
+                }
+                actualizarImagen();
+              }
+            }, { passive: true });
+          }
+
+        } catch (error) {
+          console.error('Error al cargar producto:', error);
+          contenedor.innerHTML = '<div class="image-placeholder-detail">ERROR AL CARGAR</div>';
+        }
+      }
+
+      // Ejecutar carga
+      cargarProducto();
+    } else {
+      document.body.innerHTML = '<div style="text-align:center; padding:50px; font-family: sans-serif;">Producto no encontrado. <br><br> <a href="index.html" style="color: #b68d40;">Volver al catálogo</a></div>';
+    }
+
+    // ========================================
+    // 🛒 FUNCIONES DEL CARRITO
+    // ========================================
+    
+    // Agregar producto desde la página de detalle
+    window.agregarDesdeDetalle = function() {
+      if (!productoActual) return;
+      
+      // Obtener carrito del localStorage
+      let carrito = [];
+      try {
+        const guardado = localStorage.getItem('vianie_carrito');
+        if (guardado) {
+          carrito = JSON.parse(guardado);
+        }
+      } catch (e) {}
+      
+      // Verificar si ya existe
+      const existente = carrito.find(item => item.id === productoActual.id);
+      if (existente) {
+        existente.cantidad++;
+      } else {
+        carrito.push({
+          id: productoActual.id,
+          nombre: productoActual.nombre,
+          precio: productoActual.precio,
+          imagen: productoActual.imagen_url || '',
+          cantidad: 1
+        });
+      }
+      
+      // Guardar
+      localStorage.setItem('vianie_carrito', JSON.stringify(carrito));
+      
+      // Feedback visual
+      const btn = document.getElementById('add-to-cart-detail');
+      const textoOriginal = btn.innerHTML;
+      btn.innerHTML = '✓ Agregado';
+      btn.style.background = 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)';
+      
+      setTimeout(() => {
+        btn.innerHTML = textoOriginal;
+        btn.style.background = 'linear-gradient(135deg, #b68d40 0%, #8f7030 100%)';
+      }, 2000);
+    };
+
+    // Comprar directo por WhatsApp (producto individual)
+    window.comprarDirectoWhatsApp = async function(contactoNum = 1) {
+      if (!productoActual) return;
+      
+      let ws1 = '63629975';
+      let ws2 = '76175389';
+      
+      try {
+        const { data: configData } = await supabaseClient
+          .from('configuracion')
+          .select('*')
+          .eq('id', 'general')
+          .single();
+        
+        if (configData) {
+          ws1 = configData.ws_1 || ws1;
+          ws2 = configData.ws_2 || ws2;
+        }
+      } catch (e) {
+        console.log('Error cargando config:', e);
+      }
+      
+      const wsNumber = contactoNum === 1 ? ws1 : ws2;
+      
+      const mensaje = `Hola Vianie! 👋 Vengo de la página web y me gustaría comprar:\n\n*Producto:* ${productoActual.nombre}\n*Material:* ${productoActual.material}\n*Precio:* ${productoActual.precio} bs.-\n\n¿Está disponible?`;
+      const mensajeCodificado = encodeURIComponent(mensaje);
+      
+      window.open(`https://wa.me/${wsNumber}?text=${mensajeCodificado}`, '_blank');
+    };
+  </script>
+
+</body>
+</html>
