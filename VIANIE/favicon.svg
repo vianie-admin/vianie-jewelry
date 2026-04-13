@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Fondo circular elegante -->
+  <circle cx="32" cy="32" r="30" fill="#1a1a1a"/>
+  
+  <!-- Diamante/Joya estilizado -->
+  <path d="M32 8 L44 24 L32 48 L20 24 Z" fill="none" stroke="#b68d40" stroke-width="2.5" stroke-linejoin="round"/>
+  
+  <!-- Línea central del diamante -->
+  <line x1="20" y1="24" x2="44" y2="24" stroke="#b68d40" stroke-width="2" stroke-linecap="round"/>
+  
+  <!-- Brillo superior -->
+  <path d="M32 8 L38 16 L32 24 L26 16 Z" fill="#b68d40" opacity="0.3"/>
+  
+  <!-- Texto V pequeño -->
+  <text x="32" y="58" text-anchor="middle" font-family="serif" font-size="12" font-weight="bold" fill="#b68d40">V</text>
+</svg>

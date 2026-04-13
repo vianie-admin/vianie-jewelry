@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Básico -->
+  <title>Vianie Jewelry - Accesorios en Acero Inox | Joyería Elegante en Bolivia</title>
+  <meta name="description" content="Descubre nuestra colección de joyas elegantes y duraderas fabricadas en acero inoxidable. Aros, argollas, cadenas, collares y más. Envíos a domicilio en Santa Cruz, Bolivia.">
+  <meta name="keywords" content="joyería, acero inoxidable, accesorios, aros, argollas, cadenas, collares, Bolivia, Santa Cruz, joyas elegantes, regalos">
+  <meta name="author" content="Vianie Jewelry">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#b68d40">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.svg">
+  <link rel="apple-touch-icon" href="favicon.svg">
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="/">
+
+  <!-- Open Graph / Facebook / WhatsApp -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="/">
+  <meta property="og:title" content="Vianie Jewelry - Accesorios en Acero Inox">
+  <meta property="og:description" content="Descubre nuestra colección de joyas elegantes y duraderas fabricadas en acero inoxidable. Envíos a domicilio en Santa Cruz, Bolivia.">
+  <meta property="og:image" content="/og-image.svg">
+  <meta property="og:locale" content="es_BO">
+  <meta property="og:site_name" content="Vianie Jewelry">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="/">
+  <meta name="twitter:title" content="Vianie Jewelry - Accesorios en Acero Inox">
+  <meta name="twitter:description" content="Descubre nuestra colección de joyas elegantes y duraderas fabricadas en acero inoxidable. Envíos a domicilio en Santa Cruz, Bolivia.">
+  <meta name="twitter:image" content="/og-image.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <input type="checkbox" id="menu-toggle" class="menu-checkbox">
+
+  <nav class="top-navbar">
+    <label for="menu-toggle" class="menu-btn">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+      </svg>
+      MENÚ
+    </label>
+
+    <div class="logo">
+      <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#b68d40" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 3h12l4 6-10 12L2 9z"/>
+      </svg>
+      <span class="logo-text">VIANIE</span>
+    </div>
+  </nav>
+
+  <label for="menu-toggle" class="menu-overlay"></label>
+
+  <aside class="side-menu">
+    <div class="side-menu-header">
+      <div class="logo">
+        <span class="logo-text">VIANIE</span>
+      </div>
+      <label for="menu-toggle" class="close-btn">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+        </svg>
+      </label>
+    </div>
+    <ul class="side-menu-links">
+      <li><a href="index.html">Catálogo Completo</a></li>
+    </ul>
+  </aside>
+
+  <main class="store-container">
+
+    <header class="hero-header">
+      <h1 class="hero-title">Accesorios en <span class="highlight">Acero Inox</span></h1>
+      <p class="hero-subtitle">Descubre nuestra colección de joyas elegantes, minimalistas y duraderas para cada ocasión.</p>
+    </header>
+
+    <div class="search-filter-container">
+      <div class="search-box">
+        <input type="text" id="buscador" placeholder="Buscar productos...">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+          <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+        </svg>
+      </div>
+
+      <div class="filter-controls">
+        <select id="filtro-categoria" class="filter-select">
+          <option value="">Todas las categorías</option>
+        </select>
+        <select id="filtro-material" class="filter-select">
+          <option value="">Todos los materiales</option>
+        </select>
+        <button id="btn-limpiar" class="filter-btn">Limpiar</button>
+      </div>
+
+      <div class="results-count" id="contador-resultados"></div>
+    </div>
+
+    <div id="catalogo-dinamico">
+        <div class="loading-container">
+          <div class="loading-spinner"></div>
+        </div>
+    </div>
+
+  </main>
+
+  <!-- Botón Flotante del Carrito -->
+  <button class="cart-float-btn" id="cartFloatBtn" onclick="abrirCarrito()">
+    <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+      <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+    </svg>
+    <span class="cart-badge" id="cartBadge" style="display: none;">0</span>
+  </button>
+
+  <!-- Modal del Carrito -->
+  <div class="cart-modal-overlay" id="cartModal">
+    <div class="cart-modal">
+      <div class="cart-modal-header">
+        <h3>🛒 Tu Carrito</h3>
+        <button class="cart-close-btn" onclick="cerrarCarrito()">✕</button>
+      </div>
+      <div class="cart-modal-body" id="cartItems">
+        <div class="cart-empty" id="cartEmpty">
+          <svg viewBox="0 0 24 24" width="80" height="80" fill="currentColor">
+            <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+          </svg>
+          <p>Tu carrito está vacío</p>
+          <small>Agrega productos desde el catálogo</small>
+        </div>
+        <div class="cart-items-list" id="cartItemsList"></div>
+      </div>
+      <div class="cart-modal-footer" id="cartFooter" style="display: none;">
+        <div class="cart-total">
+          <span>Total:</span>
+          <span id="cartTotal">0 bs.-</span>
+        </div>
+        <button class="cart-checkout-btn" onclick="enviarPedidoWhatsApp()">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+            <path d="M.057 24l1.687-6.162c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.56 5.338-11.892 11.901-11.892 3.181 0 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.481 8.404 0 6.56-5.338 11.892-11.901 11.892-2.01 0-3.987-.506-5.741-1.465l-6.253 1.641z"/>
+          </svg>
+          Enviar Pedido por WhatsApp
+        </button>
+        <button class="cart-clear-btn" onclick="vaciarCarrito()">
+          Vaciar Carrito
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>Vianie Jewelry</h4>
+        <p>Accesorios elegantes y duraderos fabricados en acero inoxidable de alta calidad. Cada pieza está diseñada para complementar tu estilo único.</p>
+        <div class="social-links">
+          <a href="#" title="Instagram">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+          </a>
+          <a href="#" title="WhatsApp">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path d="M.057 24l1.687-6.162c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.56 5.338-11.892 11.901-11.892 3.181 0 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.481 8.404 0 6.56-5.338 11.892-11.901 11.892-2.01 0-3.987-.506-5.741-1.465l-6.253 1.641zm11.901-20.814c-4.909 0-8.905 3.996-8.905 8.906 0 2.055.707 3.97 2.001 5.485l-1.094 3.991 4.089-1.071c1.464.845 3.134 1.29 4.849 1.29 4.909 0 8.905-3.996 8.905-8.906 0-4.91-3.996-8.906-8.905-8.906zm5.241 12.601c-.287-.144-1.698-.838-1.961-.934-.263-.096-.454-.144-.646.144-.192.288-.742.934-.908 1.127-.166.192-.331.216-.618.072-.287-.144-1.211-.447-2.308-1.425-.853-.762-1.43-1.702-1.597-1.99-.166-.288-.018-.444.126-.587.13-.13.287-.336.431-.504.144-.168.192-.288.287-.48.096-.192.048-.36-.024-.504-.072-.144-.646-1.56-.885-2.136-.233-.56-.469-.484-.646-.492-.167-.008-.36-.01-.552-.01s-.504.072-.768.36c-.263.288-1.006.984-1.006 2.399 0 1.416 1.031 2.784 1.175 2.976.144.192 2.03 3.1 4.916 4.347.687.297 1.223.474 1.64.607.69.219 1.318.188 1.815.114.553-.082 1.698-.694 1.937-1.366.239-.672.239-1.248.167-1.367-.071-.118-.263-.192-.55-.336z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-section">
+        <h4>Categorías</h4>
+        <ul id="footer-categorias">
+          <li><a href="#">Aros y Argollas</a></li>
+          <li><a href="#">Cadenas y Collares</a></li>
+          <li><a href="#">Otros</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h4>Contacto</h4>
+        <p>¿Tienes preguntas? ¡Escríbenos!</p>
+        <p><strong>WhatsApp 1:</strong> <span id="footer-ws1">63629975</span></p>
+        <p><strong>WhatsApp 2:</strong> <span id="footer-ws2">76175389</span></p>
+        <p style="margin-top: 15px;">📍 Santa Cruz, Bolivia</p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2026 Vianie Jewelry. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <button class="scroll-top-btn" id="scrollTopBtn" title="Volver arriba">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+      <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+    </svg>
+  </button>
+
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // ==========================================
+    // VIANIE JEWELRY - SUPABASE CLIENT
+    // ==========================================
+    const SUPABASE_URL = 'https://wcaljwklhfgvguwdtabw.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndjYWxqd2tsaGZndmd1d2R0YWJ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1ODcxMTYsImV4cCI6MjA5MTE2MzExNn0.7zG5MDeIk8xwBIs6s1iNfaVkaH3C5B7DLJVyoFPqKck';
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // Variables globales
+    let todosLosProductos = [];
+    let categoriasUnicas = new Set();
+    let materialesUnicos = new Set();
+
+    // ========================================
+    // ⚡ SISTEMA DE CACHE ULTRA RÁPIDO
+    // ========================================
+    function obtenerCache() {
+        try {
+            const cache = localStorage.getItem('vianie_cache');
+            if (cache) {
+                const data = JSON.parse(cache);
+                // Cache válido por 5 minutos
+                if (Date.now() - data.timestamp < 5 * 60 * 1000) {
+                    return data;
+                }
+            }
+        } catch (e) {}
+        return null;
+    }
+
+    function guardarCache(productos, config) {
+        try {
+            localStorage.setItem('vianie_cache', JSON.stringify({
+                productos,
+                config,
+                timestamp: Date.now()
+            }));
+        } catch (e) {}
+    }
+
+    // ========================================
+    // 🎨 RENDERIZADO
+    // ========================================
+    function crearTarjetaProducto(producto, indice) {
+        const claseAgotado = producto.agotado ? 'tarjeta-agotada' : '';
+        const delay = (indice % 6) * 0.05;
+        return `
+          <article class="jewelry-card ${claseAgotado}" style="animation-delay: ${delay}s">
+            <a href="producto.html?id=${encodeURIComponent(producto.id)}&nombre=${encodeURIComponent(producto.nombre)}&precio=${producto.precio}&material=${encodeURIComponent(producto.material)}">
+              <div class="image-container">
+                  <img src="${producto.imagen_url || ''}" alt="${producto.nombre}" loading="lazy" onerror="this.style.display='none'">
+                  ${producto.agotado ? '<div class="badge-agotado">AGOTADO</div>' : ''}
+              </div>
+              <div class="jewelry-info">
+                <h3>${producto.nombre}</h3>
+                <div class="jewelry-details">
+                  <span class="price">${producto.precio} bs.-</span>
+                  <span class="material-tag">${producto.material}</span>
+                </div>
+              </div>
+            </a>
+            ${!producto.agotado ? `<button class="add-to-cart-btn" onclick="event.stopPropagation(); agregarAlCarrito('${producto.id}', '${producto.nombre.replace(/'/g, "\\'")}', ${producto.precio}, '${producto.imagen_url || ''}')" title="Agregar al carrito">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+              </svg>
+            </button>` : ''}
+          </article>`;
+    }
+
+    function renderizarProductos(productos) {
+        const contenedor = document.getElementById('catalogo-dinamico');
+        const contador = document.getElementById('contador-resultados');
+        
+        if (productos.length === 0) {
+            contenedor.innerHTML = `
+              <div class="no-results">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                </svg>
+                <h3>No se encontraron productos</h3>
+                <p>Intenta con otros términos de búsqueda o limpia los filtros.</p>
+              </div>`;
+            contador.textContent = '0 resultados';
+            return;
+        }
+
+        const categorias = {};
+        productos.forEach((producto, index) => {
+            const tarjetaHTML = crearTarjetaProducto(producto, index);
+            if (!categorias[producto.categoria]) categorias[producto.categoria] = [];
+            categorias[producto.categoria].push(tarjetaHTML);
+        });
+
+        let htmlFinal = '';
+        for (const cat in categorias) {
+            htmlFinal += `<h2 class="category-title">${cat}</h2><section class="jewelry-grid">${categorias[cat].join('')}</section>`;
+        }
+        contenedor.innerHTML = htmlFinal || '<p>Catálogo vacío.</p>';
+        contador.textContent = `${productos.length} resultado${productos.length !== 1 ? 's' : ''}`;
+    }
+
+    // ========================================
+    // 🔍 FILTROS
+    // ========================================
+    function filtrarProductos() {
+        const busqueda = document.getElementById('buscador').value.toLowerCase().trim();
+        const categoriaSeleccionada = document.getElementById('filtro-categoria').value;
+        const materialSeleccionado = document.getElementById('filtro-material').value;
+
+        const filtrados = todosLosProductos.filter(producto => {
+            const coincideBusqueda = !busqueda || 
+                producto.nombre.toLowerCase().includes(busqueda) ||
+                producto.material.toLowerCase().includes(busqueda) ||
+                producto.categoria.toLowerCase().includes(busqueda);
+            
+            const coincideCategoria = !categoriaSeleccionada || producto.categoria === categoriaSeleccionada;
+            const coincideMaterial = !materialSeleccionado || producto.material === materialSeleccionado;
+
+            return coincideBusqueda && coincideCategoria && coincideMaterial;
+        });
+
+        renderizarProductos(filtrados);
+    }
+
+    window.filtrarProductos = filtrarProductos;
+
+    // ========================================
+    // 🚀 CARGA INICIALIZADA (OPTIMIZADA)
+    // ========================================
+    async function inicializar() {
+        const cache = obtenerCache();
+
+        // Si hay cache, mostrar inmediatamente
+        if (cache) {
+            todosLosProductos = cache.productos;
+            const config = cache.config;
+
+            aplicarConfiguracion(config);
+            poblarFiltros();
+            renderizarProductos(cache.productos);
+
+            // Actualizar en segundo plano
+            actualizarEnSegundoPlano();
+            return;
+        }
+
+        // Si no hay cache, cargar desde Supabase
+        await cargarDesdeSupabase();
+    }
+
+    function aplicarConfiguracion(config) {
+        document.querySelector('.hero-title').innerHTML = config.titulo_hero.replace("Acero Inox", '<span class="highlight">Acero Inox</span>');
+        document.querySelector('.hero-subtitle').innerText = config.desc_hero;
+        if (config.ws_1) document.getElementById('footer-ws1').textContent = config.ws_1;
+        if (config.ws_2) document.getElementById('footer-ws2').textContent = config.ws_2;
+    }
+
+    function poblarFiltros() {
+        categoriasUnicas = new Set(todosLosProductos.map(p => p.categoria));
+        materialesUnicos = new Set(todosLosProductos.map(p => p.material));
+
+        const selectCategoria = document.getElementById('filtro-categoria');
+        const selectMaterial = document.getElementById('filtro-material');
+        
+        // Limpiar opciones existentes (mantener la primera)
+        selectCategoria.innerHTML = '<option value="">Todas las categorías</option>';
+        selectMaterial.innerHTML = '<option value="">Todos los materiales</option>';
+
+        categoriasUnicas.forEach(cat => {
+            const option = document.createElement('option');
+            option.value = cat;
+            option.textContent = cat;
+            selectCategoria.appendChild(option);
+        });
+
+        materialesUnicos.forEach(mat => {
+            const option = document.createElement('option');
+            option.value = mat;
+            option.textContent = mat;
+            selectMaterial.appendChild(option);
+        });
+
+        // Footer categorías
+        const footerCategorias = document.getElementById('footer-categorias');
+        footerCategorias.innerHTML = '';
+        categoriasUnicas.forEach(cat => {
+            const li = document.createElement('li');
+            li.innerHTML = `<a href="#" onclick="document.getElementById('filtro-categoria').value='${cat}'; filtrarProductos(); window.scrollTo({top: 400, behavior: 'smooth'}); return false;">${cat}</a>`;
+            footerCategorias.appendChild(li);
+        });
+    }
+
+    async function cargarDesdeSupabase() {
+        try {
+            // Cargar configuración
+            const { data: configData, error: configError } = await supabaseClient
+                .from('configuracion')
+                .select('*')
+                .eq('id', 'general')
+                .single();
+
+            const config = configData || {
+                titulo_hero: "Accesorios en Acero Inox",
+                desc_hero: "Descubre nuestra colección de joyas elegantes, minimalistas y duraderas.",
+                ws_1: "63629975",
+                ws_2: "76175389"
+            };
+
+            // Cargar productos ordenados por nombre
+            const { data: productos, error: productosError } = await supabaseClient
+                .from('productos')
+                .select('*')
+                .order('nombre', { ascending: true });
+
+            if (productosError) throw productosError;
+
+            todosLosProductos = productos || [];
+
+            // Guardar en cache
+            guardarCache(todosLosProductos, config);
+
+            aplicarConfiguracion(config);
+            poblarFiltros();
+            renderizarProductos(todosLosProductos);
+
+        } catch (error) {
+            console.error('Error al cargar:', error);
+            document.getElementById('catalogo-dinamico').innerHTML = `
+              <div class="no-results">
+                <h3>Error al cargar</h3>
+                <p>${error.message}</p>
+              </div>`;
+        }
+    }
+
+    async function actualizarEnSegundoPlano() {
+        try {
+            // Cargar configuración
+            const { data: configData } = await supabaseClient
+                .from('configuracion')
+                .select('*')
+                .eq('id', 'general')
+                .single();
+
+            const config = configData || {};
+
+            // Cargar productos
+            const { data: productos, error } = await supabaseClient
+                .from('productos')
+                .select('*')
+                .order('nombre', { ascending: true });
+
+            if (error) throw error;
+
+            // Solo actualizar si hay cambios
+            if (JSON.stringify(productos) !== JSON.stringify(todosLosProductos)) {
+                todosLosProductos = productos || [];
+                guardarCache(todosLosProductos, config);
+                aplicarConfiguracion(config);
+                poblarFiltros();
+                renderizarProductos(todosLosProductos);
+            }
+        } catch (e) {
+            // Silencioso - el usuario ya tiene datos del cache
+        }
+    }
+
+    // Iniciar inmediatamente
+    inicializar();
+
+    // ========================================
+    // 🛒 SISTEMA DE CARRITO
+    // ========================================
+    let carrito = [];
+
+    // Cargar carrito del localStorage
+    function cargarCarrito() {
+        try {
+            const guardado = localStorage.getItem('vianie_carrito');
+            if (guardado) {
+                carrito = JSON.parse(guardado);
+                actualizarBadge();
+            }
+        } catch (e) {
+            carrito = [];
+        }
+    }
+
+    // Guardar carrito en localStorage
+    function guardarCarrito() {
+        try {
+            localStorage.setItem('vianie_carrito', JSON.stringify(carrito));
+        } catch (e) {}
+    }
+
+    // Agregar producto al carrito
+    window.agregarAlCarrito = function(id, nombre, precio, imagen) {
+        const existente = carrito.find(item => item.id === id);
+        
+        if (existente) {
+            existente.cantidad++;
+        } else {
+            carrito.push({
+                id: id,
+                nombre: nombre,
+                precio: precio,
+                imagen: imagen,
+                cantidad: 1
+            });
+        }
+        
+        guardarCarrito();
+        actualizarBadge();
+        mostrarToastCarrito('✓ ' + nombre + ' agregado');
+        
+        // Animación del botón flotante
+        const btn = document.getElementById('cartFloatBtn');
+        btn.classList.add('adding');
+        setTimeout(() => btn.classList.remove('adding'), 300);
+    };
+
+    // Actualizar badge del carrito
+    function actualizarBadge() {
+        const badge = document.getElementById('cartBadge');
+        const totalItems = carrito.reduce((sum, item) => sum + item.cantidad, 0);
+        
+        if (totalItems > 0) {
+            badge.textContent = totalItems > 99 ? '99+' : totalItems;
+            badge.style.display = 'flex';
+        } else {
+            badge.style.display = 'none';
+        }
+    }
+
+    // Mostrar toast de carrito
+    function mostrarToastCarrito(mensaje) {
+        const toast = document.createElement('div');
+        toast.className = 'cart-toast';
+        toast.textContent = mensaje;
+        document.body.appendChild(toast);
+        
+        setTimeout(() => toast.classList.add('show'), 10);
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 300);
+        }, 2000);
+    }
+
+    // Abrir carrito
+    window.abrirCarrito = function() {
+        renderizarCarrito();
+        document.getElementById('cartModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    };
+
+    // Cerrar carrito
+    window.cerrarCarrito = function() {
+        document.getElementById('cartModal').classList.remove('active');
+        document.body.style.overflow = '';
+    };
+
+    // Cerrar al hacer click fuera
+    document.addEventListener('click', (e) => {
+        if (e.target.id === 'cartModal') {
+            cerrarCarrito();
+        }
+    });
+
+    // Renderizar carrito
+    function renderizarCarrito() {
+        const itemsList = document.getElementById('cartItemsList');
+        const emptyMsg = document.getElementById('cartEmpty');
+        const footer = document.getElementById('cartFooter');
+        
+        if (carrito.length === 0) {
+            emptyMsg.style.display = 'block';
+            itemsList.style.display = 'none';
+            footer.style.display = 'none';
+            return;
+        }
+        
+        emptyMsg.style.display = 'none';
+        itemsList.style.display = 'flex';
+        footer.style.display = 'block';
+        
+        itemsList.innerHTML = carrito.map(item => `
+            <div class="cart-item">
+                <div class="cart-item-image">
+                    ${item.imagen ? `<img src="${item.imagen}" alt="${item.nombre}" onerror="this.style.display='none'">` : '📷'}
+                </div>
+                <div class="cart-item-info">
+                    <div class="cart-item-name">${item.nombre}</div>
+                    <div class="cart-item-price">${item.precio} bs.-</div>
+                </div>
+                <div class="cart-item-controls">
+                    <div class="cart-item-qty">
+                        <button class="qty-btn" onclick="cambiarCantidad('${item.id}', -1)">−</button>
+                        <span class="qty-value">${item.cantidad}</span>
+                        <button class="qty-btn" onclick="cambiarCantidad('${item.id}', 1)">+</button>
+                    </div>
+                    <button class="cart-item-remove" onclick="eliminarDelCarrito('${item.id}')" title="Eliminar">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        `).join('');
+        
+        // Calcular total
+        const total = carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+        document.getElementById('cartTotal').textContent = total + ' bs.-';
+    }
+
+    // Cambiar cantidad
+    window.cambiarCantidad = function(id, cambio) {
+        const item = carrito.find(i => i.id === id);
+        if (item) {
+            item.cantidad += cambio;
+            if (item.cantidad <= 0) {
+                eliminarDelCarrito(id);
+                return;
+            }
+            guardarCarrito();
+            renderizarCarrito();
+            actualizarBadge();
+        }
+    };
+
+    // Eliminar del carrito
+    window.eliminarDelCarrito = function(id) {
+        carrito = carrito.filter(item => item.id !== id);
+        guardarCarrito();
+        renderizarCarrito();
+        actualizarBadge();
+    };
+
+    // Vaciar carrito
+    window.vaciarCarrito = function() {
+        if (confirm('¿Estás seguro de vaciar el carrito?')) {
+            carrito = [];
+            guardarCarrito();
+            renderizarCarrito();
+            actualizarBadge();
+        }
+    };
+
+    // Enviar pedido por WhatsApp
+    window.enviarPedidoWhatsApp = async function() {
+        if (carrito.length === 0) return;
+        
+        // Obtener configuración de WhatsApp
+        let ws1 = '63629975';
+        let ws2 = '76175389';
+        
+        try {
+            const { data: configData } = await supabaseClient
+                .from('configuracion')
+                .select('*')
+                .eq('id', 'general')
+                .single();
+            
+            if (configData) {
+                ws1 = configData.ws_1 || ws1;
+                ws2 = configData.ws_2 || ws2;
+            }
+        } catch (e) {
+            console.log('Error cargando config:', e);
+        }
+        
+        // Construir mensaje
+        let mensaje = '🛍️ *NUEVO PEDIDO - VIANIE JEWELRY*\n\n';
+        mensaje += '━━━━━━━━━━━━━━━━━━━━\n\n';
+        
+        carrito.forEach((item, index) => {
+            mensaje += `*${index + 1}. ${item.nombre}*\n`;
+            mensaje += `   Cantidad: ${item.cantidad}\n`;
+            mensaje += `   Precio: ${item.precio} bs.- c/u\n`;
+            mensaje += `   Subtotal: ${item.precio * item.cantidad} bs.-\n\n`;
+        });
+        
+        mensaje += '━━━━━━━━━━━━━━━━━━━━\n';
+        
+        const total = carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+        mensaje += `\n💰 *TOTAL: ${total} bs.-*\n\n`;
+        mensaje += '📍 Envío a domicilio en Santa Cruz\n';
+        mensaje += '⏰ Por favor confirmar disponibilidad y tiempo de entrega';
+        
+        const mensajeCodificado = encodeURIComponent(mensaje);
+        
+        // Abrir WhatsApp con AMBOS contactos
+        window.open(`https://wa.me/${ws1}?text=${mensajeCodificado}`, '_blank');
+        
+        // Abrir segundo contacto después de un pequeño delay
+        setTimeout(() => {
+            window.open(`https://wa.me/${ws2}?text=${mensajeCodificado}`, '_blank');
+        }, 500);
+        
+        // Limpiar carrito después de enviar
+        setTimeout(() => {
+            if (confirm('¿Ya enviaste el pedido a ambos contactos? ¿Deseas vaciar el carrito?')) {
+                carrito = [];
+                guardarCarrito();
+                renderizarCarrito();
+                actualizarBadge();
+                cerrarCarrito();
+            }
+        }, 1500);
+    };
+
+    // Cargar carrito al iniciar
+    cargarCarrito();
+
+    // Event listeners
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('buscador').addEventListener('input', filtrarProductos);
+        document.getElementById('filtro-categoria').addEventListener('change', filtrarProductos);
+        document.getElementById('filtro-material').addEventListener('change', filtrarProductos);
+        
+        document.getElementById('btn-limpiar').addEventListener('click', () => {
+            document.getElementById('buscador').value = '';
+            document.getElementById('filtro-categoria').value = '';
+            document.getElementById('filtro-material').value = '';
+            renderizarProductos(todosLosProductos);
+        });
+
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+
+            const navbar = document.querySelector('.top-navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        setTimeout(() => {
+            document.querySelectorAll('.category-title').forEach(el => {
+                el.classList.add('fade-in');
+                observer.observe(el);
+            });
+        }, 100);
+    });
+  </script>
+</body>
+</html>
