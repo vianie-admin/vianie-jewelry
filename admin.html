@@ -384,27 +384,80 @@
     window.editarProducto = (id) => openProductModal(id);
 
     // ==========================================
-    // 🖼️ SELECTOR DE GALERÍA
+    // 🖼️ SELECTOR DE GALERÍA (OPTIMIZADO)
     // ==========================================
+    let gallerySelectorLoaded = false;
+
     window.abrirSelectorGaleria = function() {
       const grid = document.getElementById('gallerySelectorGrid');
       
-      if (allGalleryImages.length === 0) {
-        grid.innerHTML = '<div style="grid-column:1/-1;padding:40px;text-align:center;color:var(--gray)"><p>No hay imágenes en la galería. Sube imágenes primero desde la pestaña Galería.</p></div>';
-      } else {
-        grid.innerHTML = allGalleryImages.map(img => `
-          <div style="cursor:pointer;border:2px solid #e5e5e5;border-radius:8px;overflow:hidden;transition:all .2s" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='#e5e5e5'" onclick="seleccionarImagenGaleria('${img.src}')">
-            <img src="${img.src}" alt="${img.nombre}" style="width:100%;height:120px;object-fit:cover" onerror="this.parentElement.style.display='none'">
-            <div style="padding:6px;font-size:11px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:var(--light)">${img.nombre}</div>
-          </div>
-        `).join('');
-      }
-      
+      // Mostrar loading mientras se carga
+      grid.innerHTML = '<div style="grid-column:1/-1;padding:60px;text-align:center;color:var(--gray)"><div class="spinner" style="margin:0 auto 20px"></div><p>Cargando imágenes...</p></div>';
       document.getElementById('gallerySelectorModal').classList.add('active');
+      
+      // Cargar imágenes con un pequeño delay para no bloquear la UI
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          if (allGalleryImages.length === 0) {
+            grid.innerHTML = '<div style="grid-column:1/-1;padding:40px;text-align:center;color:var(--gray)"><p>No hay imágenes en la galería. Sube imágenes primero desde la pestaña Galería.</p></div>';
+          } else {
+            // Usar fragment para mejor rendimiento
+            const fragment = document.createDocumentFragment();
+            const container = document.createElement('div');
+            container.style.cssText = 'display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px;max-height:400px;overflow-y:auto';
+            
+            allGalleryImages.forEach(img => {
+              const item = document.createElement('div');
+              item.style.cssText = 'cursor:pointer;border:2px solid #e5e5e5;border-radius:8px;overflow:hidden;background:var(--white)';
+              item.dataset.src = img.src;
+              
+              const imageEl = document.createElement('img');
+              imageEl.src = img.src;
+              imageEl.alt = img.nombre;
+              imageEl.style.cssText = 'width:100%;height:120px;object-fit:cover;display:block';
+              imageEl.loading = 'lazy';
+              imageEl.onerror = function() { this.parentElement.style.display = 'none'; };
+              
+              const labelEl = document.createElement('div');
+              labelEl.style.cssText = 'padding:6px;font-size:11px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:var(--light)';
+              labelEl.textContent = img.nombre;
+              
+              item.appendChild(imageEl);
+              item.appendChild(labelEl);
+              container.appendChild(item);
+              fragment.appendChild(item);
+            });
+            
+            grid.innerHTML = '';
+            grid.appendChild(container);
+            
+            // Agregar event listeners una sola vez usando delegation
+            container.onclick = function(e) {
+              const item = e.target.closest('div[data-src]');
+              if (item) {
+                seleccionarImagenGaleria(item.dataset.src);
+              }
+            };
+            
+            container.onmouseover = function(e) {
+              const item = e.target.closest('div[data-src]');
+              if (item) item.style.borderColor = 'var(--gold)';
+            };
+            
+            container.onmouseout = function(e) {
+              const item = e.target.closest('div[data-src]');
+              if (item) item.style.borderColor = '#e5e5e5';
+            };
+          }
+          
+          gallerySelectorLoaded = true;
+        }, 100);
+      });
     };
 
     window.cerrarSelectorGaleria = function() {
       document.getElementById('gallerySelectorModal').classList.remove('active');
+      gallerySelectorLoaded = false; // Resetear para recargar la próxima vez
     };
 
     window.seleccionarImagenGaleria = function(url) {
