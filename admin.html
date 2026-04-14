@@ -491,8 +491,12 @@
         let imagenUrl = '';
         const existingProduct = id ? productos.find(p => p.id === id) : null;
 
-        // Subir imagen principal si hay nueva
-        if (tempMainImage) {
+        // Si tempMainImage es un string URL (seleccionado de galería), usarlo directamente
+        if (typeof tempMainImage === 'string') {
+          imagenUrl = tempMainImage;
+        } 
+        // Si tempMainImage es un File object (subido desde PC), subirlo a Storage
+        else if (tempMainImage && tempMainImage instanceof File) {
           const { data, error } = await supabaseClient.storage
             .from('productos-imagenes')
             .upload(`principal/${Date.now()}_${tempMainImage.name}`, tempMainImage, {
@@ -507,7 +511,9 @@
             .getPublicUrl(data.path);
 
           imagenUrl = urlData.publicUrl;
-        } else if (existingProduct) {
+        } 
+        // Si no hay imagen nueva, usar la existente
+        else if (existingProduct) {
           imagenUrl = existingProduct.imagen_url || '';
         }
 
