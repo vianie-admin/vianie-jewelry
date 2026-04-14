@@ -538,23 +538,32 @@
         allGalleryImages = [];
         
         // Listar archivos del bucket de Supabase Storage
-        const { data, error } = await supabaseClient
+        const { data: files, error } = await supabaseClient
           .storage
           .from('productos-imagenes')
           .list();
 
-        if (error) throw error;
+        if (error) {
+          console.error('Error listando archivos:', error);
+          document.getElementById('galleryGrid').innerHTML = '<div style="grid-column:1/-1;padding:40px;text-align:center;color:var(--gray)"><p>Error: ' + error.message + '</p></div>';
+          return;
+        }
+
+        console.log('Archivos encontrados:', files);
+
+        if (!files || files.length === 0) {
+          renderGaleria();
+          return;
+        }
+
+        // URL base del bucket público
+        const baseUrl = 'https://wcaljwklhfgvguwdtabw.supabase.co/storage/v1/object/public/productos-imagenes/';
 
         // Convertir a formato de galería
-        data.forEach(file => {
-          const { data: urlData } = supabaseClient
-            .storage
-            .from('productos-imagenes')
-            .getPublicUrl(file.name);
-          
+        files.forEach(file => {
           allGalleryImages.push({
             id: file.name,
-            src: urlData.publicUrl,
+            src: baseUrl + file.name,
             nombre: file.name,
             tipo: 'storage',
             productoId: null
@@ -563,7 +572,7 @@
 
         renderGaleria();
       } catch (e) {
-        console.log('Error galería:', e);
+        console.error('Error galería:', e);
         document.getElementById('galleryGrid').innerHTML = '<div style="grid-column:1/-1;padding:40px;text-align:center;color:var(--gray)"><p>Error al cargar imágenes de Storage</p></div>';
       }
     }
