@@ -531,43 +531,40 @@
     };
 
     // ==========================================
-    // 🖼️ GALERÍA
+    // 🖼️ GALERÍA - Lee directamente de Supabase Storage
     // ==========================================
     async function cargarGaleria() {
       try {
         allGalleryImages = [];
+        
+        // Listar archivos del bucket de Supabase Storage
         const { data, error } = await supabaseClient
-          .from('productos')
-          .select('*');
+          .storage
+          .from('productos-imagenes')
+          .list();
 
         if (error) throw error;
 
-        data.forEach(p => {
-          if (p.imagen_url) {
-            allGalleryImages.push({
-              id: p.id + '-main',
-              src: p.imagen_url,
-              nombre: p.nombre + ' (principal)',
-              tipo: 'principal',
-              productoId: p.id
-            });
-          }
-          if (p.galeria_urls) {
-            p.galeria_urls.forEach((g, i) => {
-              allGalleryImages.push({
-                id: p.id + '-gal-' + i,
-                src: g,
-                nombre: p.nombre + ' (galería)',
-                tipo: 'galería',
-                productoId: p.id
-              });
-            });
-          }
+        // Convertir a formato de galería
+        data.forEach(file => {
+          const { data: urlData } = supabaseClient
+            .storage
+            .from('productos-imagenes')
+            .getPublicUrl(file.name);
+          
+          allGalleryImages.push({
+            id: file.name,
+            src: urlData.publicUrl,
+            nombre: file.name,
+            tipo: 'storage',
+            productoId: null
+          });
         });
 
         renderGaleria();
       } catch (e) {
         console.log('Error galería:', e);
+        document.getElementById('galleryGrid').innerHTML = '<div style="grid-column:1/-1;padding:40px;text-align:center;color:var(--gray)"><p>Error al cargar imágenes de Storage</p></div>';
       }
     }
 
@@ -589,39 +586,15 @@
       `).join('');
     }
 
-    window.eliminarImagenGaleria = async function(imgId, nombre) {
-      if (!confirm(`¿Eliminar "${nombre}"?`)) return;
+    window.eliminarImagenGaleria = async function(filename, nombre) {
+      if (!confirm(`¿Eliminar "${nombre}" del Storage?`)) return;
       showLoading(true);
       try {
-        const prodId = imgId.split('-main')[0] || imgId.split('-gal-')[0];
-        const prod = productos.find(p => p.id === prodId);
-
-        if (!prod) {
-          showToast('Producto no encontrado', 'error');
-          showLoading(false);
-          return;
-        }
-
-        if (imgId.endsWith('-main')) {
-          // Eliminar imagen del storage
-          if (prod.imagen_url) {
-            await deleteImageFromStorage(prod.imagen_url);
-          }
-          await supabaseClient
-            .from('productos')
-            .update({ imagen_url: '' })
-            .eq('id', prodId);
-        } else {
-          const idx = parseInt(imgId.split('-gal-')[1]);
-          const urlAEliminar = prod.galeria_urls[idx];
-          await deleteImageFromStorage(urlAEliminar);
-          prod.galeria_urls.splice(idx, 1);
-          await supabaseClient
-            .from('productos')
-            .update({ galeria_urls: prod.galeria_urls })
-            .eq('id', prodId);
-        }
-
+        // Eliminar directamente de Supabase Storage
+        await supabaseClient.storage
+          .from('productos-imagenes')
+          .remove([filename]);
+        
         showToast('Imagen eliminada', 'success');
         await cargarGaleria();
       } catch (e) {
@@ -646,18 +619,91 @@
       }
     }
 
-    // Drag & Drop
+    // Drag & Drop - Subir directamente a Supabase Storage
     const uploadArea = document.getElementById('uploadArea');
     if (uploadArea) {
+      uploadArea.addEventListener('click', () => {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+        input.multiple = true;
+        input.onchange = async (e) => {
+          const files = Array.from(e.target.files);
+          if (files.length === 0) return;
+          
+          showLoading(true);
+          let uploaded = 0;
+          
+          for (const file of files) {
+            try {
+              // Generar nombre único
+              const ext = file.name.split('.').pop();
+              const uniqueName = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}.${ext}`;
+              
+              // Subir a Supabase Storage
+              const { error } = await supabaseClient.storage
+                .from('productos-imagenes')
+                .upload(uniqueName, file, {
+                  cacheControl: '3600',
+                  upsert: false
+                });
+              
+              if (error) throw error;
+              uploaded++;
+            } catch (err) {
+              console.error('Error subiendo imagen:', err);
+            }
+          }
+          
+          showLoading(false);
+          showToast(`${uploaded} imagen(es) subida(s) correctamente!`, 'success');
+          await cargarGaleria();
+        };
+        input.click();
+      });
+      
       uploadArea.addEventListener('dragover', e => {
         e.preventDefault();
         uploadArea.classList.add('dragover');
       });
+      
       uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
-      uploadArea.addEventListener('drop', e => {
+      
+      uploadArea.addEventListener('drop', async e => {
         e.preventDefault();
         uploadArea.classList.remove('dragover');
-        showToast('Imágenes recibidas! Abre el formulario de producto para agregarlas.', 'success');
+        
+        const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+        if (files.length === 0) {
+          showToast('Solo se permiten imágenes', 'error');
+          return;
+        }
+        
+        showLoading(true);
+        let uploaded = 0;
+        
+        for (const file of files) {
+          try {
+            const ext = file.name.split('.').pop();
+            const uniqueName = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}.${ext}`;
+            
+            const { error } = await supabaseClient.storage
+              .from('productos-imagenes')
+              .upload(uniqueName, file, {
+                cacheControl: '3600',
+                upsert: false
+              });
+            
+            if (error) throw error;
+            uploaded++;
+          } catch (err) {
+            console.error('Error subiendo imagen:', err);
+          }
+        }
+        
+        showLoading(false);
+        showToast(`${uploaded} imagen(es) subida(s) correctamente!`, 'success');
+        await cargarGaleria();
       });
     }
 
